@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.turbo/
+.next/
+coverage/
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker/data/
+
+# Rust / Soroban
+target/
+*.wasm
+contracts/*/target/
+
+# Debug
+npm-debug.log*
+pnpm-debug.log*
+
+# Misc
+*.tsbuildinfo

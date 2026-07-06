@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    open-pull-requests-limit: 10
+
+  - package-ecosystem: 'cargo'
+    directory: '/contracts/audit-registry'
+    schedule:
+      interval: 'weekly'
+
+  - package-ecosystem: 'cargo'
+    directory: '/contracts/reputation'
+    schedule:
+      interval: 'weekly'
+
+  - package-ecosystem: 'cargo'
+    directory: '/contracts/bug-bounty'
+    schedule:
+      interval: 'weekly'
+
+  - package-ecosystem: 'docker'
+    directory: '/docker'
+    schedule:
+      interval: 'weekly'

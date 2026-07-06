@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 13% 8%;
+    --foreground: 210 40% 98%;
+    --card: 220 13% 10%;
+    --card-foreground: 210 40% 98%;
+    --popover: 220 13% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217 19% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 19% 12%;
+    --muted-foreground: 215 14% 65%;
+    --accent: 217 19% 15%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 217 19% 18%;
+    --input: 217 19% 14%;
+    --ring: 142 76% 36%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+}
+
+@layer components {
+  .cyber-card {
+    @apply bg-card/80 border-border/50 rounded-lg border backdrop-blur-sm;
+  }
+
+  .cyber-card-hover {
+    @apply cyber-card hover:border-primary/50 transition-all duration-300 hover:shadow-[0_0_30px_rgba(34,197,94,0.1)];
+  }
+
+  .cyber-glow {
+    @apply shadow-[0_0_30px_rgba(34,197,94,0.15)];
+  }
+
+  .cyber-text-glow {
+    text-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+  }
+
+  .severity-critical {
+    @apply border-red-500/30 bg-red-500/10 text-red-400;
+  }
+
+  .severity-high {
+    @apply border-orange-500/30 bg-orange-500/10 text-orange-400;
+  }
+
+  .severity-medium {
+    @apply border-yellow-500/30 bg-yellow-500/10 text-yellow-400;
+  }
+
+  .severity-low {
+    @apply border-blue-500/30 bg-blue-500/10 text-blue-400;
+  }
+
+  .severity-info {
+    @apply border-gray-500/30 bg-gray-500/10 text-gray-400;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Inter font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');

@@ -1,0 +1,164 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─── User ────────────────────────────────────────────────────────────────
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  role         String    @default("user")
+  avatarUrl    String?
+  isVerified   Boolean   @default(false)
+  verifyToken  String?   @unique
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  projects      Project[]
+  reports       Report[]
+  notifications Notification[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+// ─── Session ──────────────────────────────────────────────────────────────
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String   @unique
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// ─── Project ──────────────────────────────────────────────────────────────
+
+model Project {
+  id          String   @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  network     String   @default("testnet")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contracts Contract[]
+  scans     Scan[]
+  reports   Report[]
+
+  @@map("projects")
+}
+
+// ─── Contract ─────────────────────────────────────────────────────────────
+
+model Contract {
+  id         String   @id @default(uuid())
+  projectId  String
+  name       String
+  address    String
+  network    String   @default("testnet")
+  sourceHash String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  scans   Scan[]
+  reports Report[]
+
+  @@unique([projectId, address])
+  @@map("contracts")
+}
+
+// ─── Scan ─────────────────────────────────────────────────────────────────
+
+model Scan {
+  id         String   @id @default(uuid())
+  projectId  String
+  contractId String
+  status     String   @default("pending")
+  findings   Json     @default("[]")
+  summary    Json?
+  startedAt  DateTime @default(now())
+  completedAt DateTime?
+  duration   Int?
+
+  project  Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  contract Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  reports  Report[]
+
+  @@map("scans")
+}
+
+// ─── Report ───────────────────────────────────────────────────────────────
+
+model Report {
+  id              String   @id @default(uuid())
+  scanId          String
+  projectId       String
+  contractId      String
+  userId          String
+  title           String
+  status          String   @default("draft")
+  findings        Json     @default("[]")
+  summary         Json?
+  verifiedOnChain Boolean  @default(false)
+  transactionHash String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  scan        Scan     @relation(fields: [scanId], references: [id], onDelete: Cascade)
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  contract    Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  auditRecord AuditRecord?
+
+  @@map("reports")
+}
+
+// ─── Audit Record ─────────────────────────────────────────────────────────
+
+model AuditRecord {
+  id              String   @id @default(uuid())
+  reportId        String   @unique
+  projectId       String
+  reportHash      String
+  auditorAddress  String
+  contractAddress String
+  transactionHash String
+  metadata        Json?
+  createdAt       DateTime @default(now())
+
+  report Report @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@map("audit_records")
+}
+
+// ─── Notification ─────────────────────────────────────────────────────────
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
