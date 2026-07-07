@@ -173,9 +173,6 @@ export class SecurityAnalyzer {
     const startTime = Date.now();
     const sourceFile = options.file ?? 'contract/src/lib.rs';
 
-    // Simulate analysis delay
-    await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 1200));
-
     const linesAnalyzed = Math.floor(Math.random() * 500) + 100;
     const findings = generateMockFindings(this.rules, sourceFile);
     const summary = computeSummary(findings, linesAnalyzed);

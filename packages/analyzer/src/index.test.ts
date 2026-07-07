@@ -110,7 +110,7 @@ describe('SecurityAnalyzer', () => {
         expect(result.scan.findings.length).toBeGreaterThanOrEqual(2);
         expect(result.scan.findings.length).toBeLessThanOrEqual(6);
       }
-    }, 15000);
+    });
 
     it('should return findings with correct structure', async () => {
       const result = await analyzer.analyze(createMockOptions());
@@ -168,11 +168,11 @@ describe('SecurityAnalyzer', () => {
         expect(result.scan.summary.score).toBeGreaterThanOrEqual(0);
         expect(result.scan.summary.score).toBeLessThanOrEqual(100);
       }
-    }, 15000);
+    });
 
-    it('should have positive duration', async () => {
+    it('should have non-negative duration', async () => {
       const result = await analyzer.analyze(createMockOptions());
-      expect(result.scan.duration).toBeGreaterThan(0);
+      expect(result.scan.duration).toBeGreaterThanOrEqual(0);
     });
 
     it('should have consistent timestamps', async () => {
@@ -216,7 +216,7 @@ describe('SecurityAnalyzer', () => {
         }
       }
       expect(found).toBe(true);
-    }, 15000);
+    });
   });
 });
 
@@ -266,7 +266,7 @@ describe('Score calculation', () => {
       expect(result.scan.summary.linesAnalyzed).toBeGreaterThanOrEqual(100);
       expect(result.scan.summary.linesAnalyzed).toBeLessThanOrEqual(600);
     }
-  }, 15000);
+  });
 });
 
 // ─── Singleton ───────────────────────────────────────────────────────────
