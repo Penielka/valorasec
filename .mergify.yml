@@ -37,8 +37,8 @@ pull_request_rules:
       - -author=~^dependabot
     actions:
       request_reviews:
-        - users: []
-          # Add your GitHub username(s) here to auto-assign reviewers
+        - users:
+            - solomon35-stack
 
   - name: delete branch after merge
     conditions:
