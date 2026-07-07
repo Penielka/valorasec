@@ -1,0 +1,14 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "cd ../.. && pnpm build --filter=@valorasec/web",
+  "outputDirectory": ".next",
+  "installCommand": "pnpm install",
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  },
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://valorasec-api.up.railway.app"
+  }
+}

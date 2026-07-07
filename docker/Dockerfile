@@ -12,44 +12,40 @@ FROM base AS installer
 RUN apk add --no-cache libc6-compat python3 make g++
 COPY . .
 
-# Install dependencies and build all packages
+ENV CI=true
 RUN pnpm install --frozen-lockfile
+
+# Build shared packages first
 RUN pnpm build --filter=@valorasec/shared --filter=@valorasec/analyzer
 
-# ─── API Builder ─────────────────────────────────────────────────────
-FROM installer AS api-builder
+# Generate Prisma client and build API
+RUN pnpm --filter=@valorasec/api run db:generate
 RUN pnpm build --filter=@valorasec/api
+
+# Build web
+RUN pnpm build --filter=@valorasec/web
+
+# ─── API Deploy ───────────────────────────────────────────────────────
+FROM installer AS api-deploy
+RUN pnpm --filter=@valorasec/api deploy --legacy /deploy
+# Regenerate Prisma client in the deploy output
+RUN cd /deploy && pnpm exec prisma generate
 
 # ─── API Runner ──────────────────────────────────────────────────────
 FROM node:20-alpine AS api-runner
-RUN corepack enable && corepack prepare pnpm@10 --activate
+RUN apk add --no-cache openssl
 WORKDIR /app
-
-COPY --from=api-builder /app/apps/api/dist ./dist
-COPY --from=api-builder /app/apps/api/prisma ./prisma
-COPY --from=api-builder /app/apps/api/package.json ./
-COPY --from=api-builder /app/apps/api/nest-cli.json ./
-COPY --from=api-builder /app/node_modules ./node_modules
-
-RUN pnpm prisma generate
-
+COPY --from=api-deploy /deploy ./
 EXPOSE 4000
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
 
-# ─── Web Builder ─────────────────────────────────────────────────────
-FROM installer AS web-builder
-RUN pnpm build --filter=@valorasec/web
+# ─── Web Deploy ───────────────────────────────────────────────────────
+FROM installer AS web-deploy
+RUN pnpm --filter=@valorasec/web deploy --prod --legacy /deploy
 
 # ─── Web Runner ──────────────────────────────────────────────────────
 FROM node:20-alpine AS web-runner
-RUN corepack enable && corepack prepare pnpm@10 --activate
 WORKDIR /app
-
-COPY --from=web-builder /app/apps/web/.next ./.next
-COPY --from=web-builder /app/apps/web/package.json ./
-COPY --from=web-builder /app/apps/web/next.config.js ./
-COPY --from=web-builder /app/apps/web/public ./public
-COPY --from=web-builder /app/node_modules ./node_modules
-
+COPY --from=web-deploy /deploy ./
 EXPOSE 3000
-CMD ["pnpm", "start"]
+CMD ["node_modules/next/dist/bin/next", "start"]

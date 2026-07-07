@@ -1,0 +1,22 @@
+# Railway deployment config (Nixpacks)
+# https://docs.railway.app/deploy/nixpacks
+
+[phases.setup]
+nixPkgs = ["nodejs_20", "openssl"]
+
+[phases.install]
+cmds = [
+  "corepack enable",
+  "corepack prepare pnpm@10 --activate",
+  "pnpm install --frozen-lockfile"
+]
+
+[phases.build]
+cmds = [
+  "pnpm build --filter=@valorasec/shared --filter=@valorasec/analyzer",
+  "pnpm build --filter=@valorasec/api",
+  "cd apps/api && npx prisma generate"
+]
+
+[start]
+cmd = "cd apps/api && npx prisma db push && node dist/main.js"

@@ -103,8 +103,8 @@ describe('SecurityAnalyzer', () => {
     });
 
     it('should generate between 2 and 6 findings', async () => {
-      // Run multiple times to verify range
-      for (let i = 0; i < 5; i++) {
+      // Run many times to verify range
+      for (let i = 0; i < 20; i++) {
         const a = new SecurityAnalyzer();
         const result = await a.analyze(createMockOptions());
         expect(result.scan.findings.length).toBeGreaterThanOrEqual(2);
@@ -162,7 +162,7 @@ describe('SecurityAnalyzer', () => {
     });
 
     it('should have score between 0 and 100', async () => {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 15; i++) {
         const a = new SecurityAnalyzer();
         const result = await a.analyze(createMockOptions());
         expect(result.scan.summary.score).toBeGreaterThanOrEqual(0);
@@ -261,7 +261,7 @@ describe('Score calculation', () => {
   });
 
   it('should have linesAnalyzed between 100 and 600', async () => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 20; i++) {
       const result = await new SecurityAnalyzer().analyze(createMockOptions());
       expect(result.scan.summary.linesAnalyzed).toBeGreaterThanOrEqual(100);
       expect(result.scan.summary.linesAnalyzed).toBeLessThanOrEqual(600);
@@ -339,6 +339,8 @@ describe('Edge cases', () => {
   it('should generate different findings on each call', async () => {
     const analyzer = new SecurityAnalyzer();
     const r1 = await analyzer.analyze(createMockOptions());
+    // Ensure a 1ms gap so timestamp-based IDs differ between calls
+    await new Promise((resolve) => setTimeout(resolve, 1));
     const r2 = await analyzer.analyze(createMockOptions());
 
     // Compare finding sets (order and count may differ due to randomness)
