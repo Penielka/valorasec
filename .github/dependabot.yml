@@ -4,24 +4,28 @@ updates:
     directory: '/'
     schedule:
       interval: 'weekly'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 0
 
   - package-ecosystem: 'cargo'
     directory: '/contracts/audit-registry'
     schedule:
       interval: 'weekly'
+    open-pull-requests-limit: 0
 
   - package-ecosystem: 'cargo'
     directory: '/contracts/reputation'
     schedule:
       interval: 'weekly'
+    open-pull-requests-limit: 0
 
   - package-ecosystem: 'cargo'
     directory: '/contracts/bug-bounty'
     schedule:
       interval: 'weekly'
+    open-pull-requests-limit: 0
 
   - package-ecosystem: 'docker'
     directory: '/docker'
     schedule:
       interval: 'weekly'
+    open-pull-requests-limit: 0
