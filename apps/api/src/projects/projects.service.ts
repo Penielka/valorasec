@@ -9,8 +9,8 @@ export class ProjectsService {
     userId: string,
     query: { page?: number; limit?: number; search?: string; network?: string },
   ) {
-    const page = query.page ?? 1;
-    const limit = query.limit ?? 10;
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
     const skip = (page - 1) * limit;
 
     const where: Record<string, unknown> = { userId };
