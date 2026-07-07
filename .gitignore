@@ -37,5 +37,9 @@ contracts/*/target/
 npm-debug.log*
 pnpm-debug.log*
 
+# Bot configs (configured via web dashboard)
+.mergify.yml
+.coderabbit.yaml
+
 # Misc
 *.tsbuildinfo
