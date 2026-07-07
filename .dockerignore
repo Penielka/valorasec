@@ -1,0 +1,73 @@
+# ─── Dependencies (installed fresh) ──────────────────────────────────
+node_modules/
+.pnpm-store/
+
+# ─── Build output (rebuilt in Docker) ───────────────────────────────
+dist/
+.turbo/
+.next/
+coverage/
+*.tsbuildinfo
+
+# ─── Rust / Soroban artifacts ────────────────────────────────────────
+target/
+*.wasm
+contracts/*/target/
+
+# ─── Git ─────────────────────────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes
+
+# ─── CI / GitHub ─────────────────────────────────────────────────────
+.github/
+
+# ─── Docker (self-referential) ───────────────────────────────────────
+docker/
+Dockerfile*
+.dockerignore
+
+# ─── Environment ─────────────────────────────────────────────────────
+.env
+.env.*
+*.env
+
+# ─── IDE / Editor ────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.editorconfig
+
+# ─── OS ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ─── Documentation (root-level only, keep app content intact) ──────
+/*.md
+LICENSE
+/docs/
+
+# ─── Keep app-level docs content (Nextra pages) ─────────────────────
+!apps/docs/
+
+# ─── Logs ────────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# ─── Lint / Format configs (not needed at build time) ────────────────
+.prettierrc
+.prettierignore
+eslint.config.mjs
+
+# ─── Git hooks ───────────────────────────────────────────────────────
+.husky/
+
+# ─── Deployment configs (not needed in Docker) ───────────────────────
+nixpacks.toml
+vercel.json
+
+# ─── Tests / mocks ───────────────────────────────────────────────────
+# Keep test files included — they may be needed for CI-like Docker builds

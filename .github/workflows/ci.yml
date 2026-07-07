@@ -7,7 +7,22 @@ on:
     branches: [main]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
   typecheck:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,6 +37,7 @@ jobs:
       - run: pnpm typecheck
 
   lint:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +52,7 @@ jobs:
       - run: pnpm lint
 
   test:
+    needs: build
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -64,7 +81,7 @@ jobs:
       - name: Push DB schema
         run: cd apps/api && npx prisma db push
         env:
-          DATABASE_URL: postgresql://postgres:valorasec@localhost:5432/valorasec
+          DATABASE_URL: postgresql://postgres:valorasec@localhost:5432/valorasec?schema=public
       - run: pnpm test
         env:
-          DATABASE_URL: postgresql://postgres:valorasec@localhost:5432/valorasec
+          DATABASE_URL: postgresql://postgres:valorasec@localhost:5432/valorasec?schema=public

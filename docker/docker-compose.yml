@@ -37,15 +37,15 @@ services:
     container_name: valorasec-api
     environment:
       DATABASE_URL: postgresql://postgres:valorasec@postgres:5432/valorasec?schema=public
-      JWT_SECRET: change-me-in-production-use-a-real-secret
+      JWT_SECRET: valorasec-secret-change-me
       JWT_EXPIRES_IN: 15m
-      JWT_REFRESH_EXPIRES_IN_MS: 604800000
-      STELLAR_NETWORK: testnet
-      SOROBAN_RPC_URL: https://soroban-testnet.stellar.org
-      REDIS_URL: redis://redis:6379
-      PORT: 4000
+      JWT_REFRESH_EXPIRES_IN_MS: '604800000'
+      PORT: '4000'
       CORS_ORIGIN: http://localhost:3000
       NODE_ENV: production
+      REDIS_URL: redis://redis:6379
+      STELLAR_NETWORK: testnet
+      SOROBAN_RPC_URL: https://soroban-testnet.stellar.org
     ports:
       - '4000:4000'
     depends_on:
