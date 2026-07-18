@@ -46,7 +46,7 @@ describe('ScansService', () => {
   beforeEach(async () => {
     prisma = createPrismaMock();
 
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    const moduleFixture = await Test.createTestingModule({
       providers: [ScansService, { provide: PrismaService, useValue: prisma }],
     }).compile();
 
