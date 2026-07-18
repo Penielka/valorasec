@@ -45,7 +45,7 @@ export interface Finding {
 
 // ─── Scan ────────────────────────────────────────────────────────────────
 
-export type ScanStatus = 'pending' | 'running' | 'completed' | 'failed';
+export type ScanStatus = 'pending' | 'running' | 'completed' | 'failed' | 'deleted';
 
 export interface ScanResult {
   id: string;

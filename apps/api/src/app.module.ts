@@ -9,6 +9,7 @@ import { ReportsModule } from './reports/reports.module';
 import { AuditRegistryModule } from './audit-registry/audit-registry.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { HealthModule } from './health/health.module';
+import { CleanupModule } from './cleanup/cleanup.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { HealthModule } from './health/health.module';
     AuditRegistryModule,
     NotificationsModule,
     HealthModule,
+    CleanupModule,
   ],
 })
 export class AppModule {}

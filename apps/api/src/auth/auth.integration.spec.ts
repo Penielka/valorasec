@@ -254,7 +254,7 @@ describe('Auth (integration)', () => {
 
   describe('GET /api/auth/profile', () => {
     it('should return user profile with valid JWT', async () => {
-      const userWithoutHash = { ...mockUser() };
+      const userWithoutHash: Record<string, unknown> = { ...mockUser() };
       delete userWithoutHash.passwordHash;
       prisma.user.findUnique.mockResolvedValue(userWithoutHash);
       const token = getAccessToken();

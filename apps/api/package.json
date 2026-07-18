@@ -13,6 +13,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.ts --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist",
+    "cleanup": "ts-node -P tsconfig.json src/cleanup/cleanup.cli.ts",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev"
@@ -24,6 +25,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.0",
     "@nestjs/platform-express": "^10.4.0",
+    "@nestjs/schedule": "^4.1.0",
     "@nestjs/swagger": "^8.0.0",
     "@prisma/client": "^5.22.0",
     "@stellar/stellar-sdk": "^12.3.0",
@@ -43,6 +45,7 @@
     "@nestjs/cli": "^10.4.0",
     "@nestjs/schematics": "^10.2.0",
     "@nestjs/testing": "^10.4.0",
+    "@valorasec/test-utils": "workspace:*",
     "@types/bcryptjs": "^3.0.0",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.0",
